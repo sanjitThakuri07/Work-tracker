@@ -15,8 +15,8 @@ function App() {
   const [file, setFile] = useState();
   const [tableData, setTableData] = useState([]);
   const [filterTableData, setFilterTableData] = useState([]);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState(new Date("01/01/2019"));
+  const [endDate, setEndDate] = useState(new Date("10/01/2019"));
   const [searchQuery, setSearchQuery] = useState({});
 
   const fileReader = new FileReader();
@@ -72,11 +72,8 @@ function App() {
     });
   }, [projects, startDate, endDate]);
 
-  console.log({ searchQuery });
-
   useEffect(() => {
     if (!Object.keys(searchQuery).length) return;
-    console.log(searchQuery);
     const { projects, startDate, endDate } = searchQuery;
 
     let tempData = [];
@@ -86,9 +83,9 @@ function App() {
       return setFilterTableData(tableData);
     }
 
-    tempData = tableData;
+    tempData = [...tableData];
 
-    if (filterOptions) {
+    if (filterOptions?.length) {
       let filterOptions = projects.map((project) => project?.value);
       tempData = tableData.filter((data) =>
         filterOptions.includes(data?.project)
@@ -108,6 +105,7 @@ function App() {
         return itemTime <= new Date(endDate);
       });
     }
+
     function validateDate(item, startDate, endDate) {
       var itemTime = new Date(item.start_time);
       return itemTime >= new Date(startDate) && itemTime <= new Date(endDate);
@@ -120,18 +118,28 @@ function App() {
       });
 
       let tempFilterData = tempData.reduce((acc, curr) => {
-        // curr.name === acc=> name && curr.project === acc.project
-        if (curr?.name === acc?.name && curr.project === acc.project) {
-          return {
-            ...acc,
-            [`${curr?.name}-${curr?.project}`]: {
-              name: curr?.name,
-              project: curr?.project,
-            },
-          };
-        }
-        return { ...acc };
+        let objName = `${curr?.workers
+          ?.toString()
+          .replace(" ", "")}-${curr?.project?.toString().replace(" ", "")}`;
+
+        return {
+          ...acc,
+          [objName]: {
+            ...acc[objName],
+            name: curr?.workers,
+            project: curr?.project,
+            duration: validateDate(curr, startDate, endDate)
+              ? (Number(acc[objName]?.duration) || 0) +
+                Number(curr?.duration_seconds)
+              : 0,
+            repeat: Number(acc[objName]?.repeat) + 1 || 1,
+            startDate,
+            endDate,
+          },
+        };
       }, {});
+
+      console.log({ tempFilterData });
     }
 
     setFilterTableData(tempData);
