@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./dropdown.module.css";
 
-export function Select({ multiple, value, onChange, options }) {
+export function Select({ multiple, value, onChange, options, placeholder }) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const containerRef = useRef(null);
@@ -74,20 +74,10 @@ export function Select({ multiple, value, onChange, options }) {
     >
       <span className={styles.value}>
         {multiple
-          ? value.map((v) => (
-              <button
-                key={v.value}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  selectOption(v);
-                }}
-                className={styles["option-badge"]}
-              >
-                {v.label}
-                <span className={styles["remove-btn"]}>&times;</span>
-              </button>
-            ))
-          : value?.label}
+          ? value.length
+            ? `Projects (${value.length})`
+            : placeholder
+          : value?.label || placeholder}
       </span>
       <button
         onClick={(e) => {

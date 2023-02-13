@@ -31,6 +31,7 @@ function App() {
       };
 
       fileReader.readAsText(e.target.files[0]);
+      return true;
     }
   };
 
