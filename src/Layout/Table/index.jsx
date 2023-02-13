@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
 const Table = ({ tableData = [], tableHeader = [], frequency }) => {
+  const header = (tableData?.length && Object.keys(tableData[0])) || [];
   return (
     <div className="csv_table_wrapper">
       <table className="fl-table">
         <thead>
           <tr key={"header"}>
-            {tableHeader.map((key) => (
+            {header?.map((key) => (
               <th>{key}</th>
             ))}
           </tr>
@@ -16,9 +17,9 @@ const Table = ({ tableData = [], tableHeader = [], frequency }) => {
           {tableData.length
             ? tableData.map((item, index) => (
                 <tr key={index}>
-                  {Object.values(item).map((val) => (
-                    <td>{val}</td>
-                  ))}
+                  {Object.values(item).map((val) => {
+                    return <td>{val}</td>;
+                  })}
                 </tr>
               ))
             : "No data"}

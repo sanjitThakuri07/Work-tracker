@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Table from "./Layout/Table";
 import Header from "./Layout/FilterHeader";
+import { formatDate } from "./utils";
 
 const options = [
   { label: "Weekly", value: "Weekly" },
@@ -117,7 +118,7 @@ function App() {
         return itemTime >= new Date(startDate) && itemTime <= new Date(endDate);
       });
 
-      let tempFilterData = tempData.reduce((acc, curr) => {
+      tempData = tempData.reduce((acc, curr) => {
         let objName = `${curr?.workers
           ?.toString()
           .replace(" ", "")}-${curr?.project?.toString().replace(" ", "")}`;
@@ -133,17 +134,19 @@ function App() {
                 Number(curr?.duration_seconds)
               : 0,
             repeat: Number(acc[objName]?.repeat) + 1 || 1,
-            startDate,
-            endDate,
+            startDate: formatDate(startDate),
+            endDate: formatDate(endDate),
           },
         };
       }, {});
-
-      console.log({ tempFilterData });
     }
+
+    tempData = Object.values(tempData);
 
     setFilterTableData(tempData);
   }, [searchQuery]);
+
+  console.log({ filterTableData });
 
   return (
     <>
