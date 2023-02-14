@@ -30,17 +30,11 @@ export const TableWrapper = styled.div`
           border-top: 2px solid #bdbdbd;
         }
       }
-
-      &:last-child {
-        td {
-          border: 4px solid #bdbdbd;
-        }
-      }
     }
 
     .parent:last-child {
       td {
-        border: 4px solid #bdbdbd;
+        border-top: 4px solid #bdbdbd;
       }
     }
 
