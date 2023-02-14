@@ -1,31 +1,40 @@
-import React, { useState } from "react";
+import _ from "lodash";
+import moment from "moment";
+import React, { useState, useEffect } from "react";
+import { TableWrapper } from "./TableStyle";
 
-const Table = ({ tableData = [], tableHeader = [], frequency }) => {
-  const header = (tableData?.length && Object.keys(tableData[0])) || [];
+const Table = ({ tableHeader = [], tableData = [] }) => {
+  if (!tableData.length) return <>No Data</>;
+
   return (
-    <div className="csv_table_wrapper">
+    <TableWrapper>
       <table className="fl-table">
         <thead>
           <tr key={"header"}>
-            {header?.map((key) => (
-              <th>{key}</th>
+            {tableHeader?.map((key) => (
+              <th>{_.startCase(_.toLower(key))}</th>
             ))}
           </tr>
         </thead>
 
         <tbody>
-          {tableData.length
-            ? tableData.map((item, index) => (
-                <tr key={index}>
-                  {Object.values(item).map((val) => {
-                    return <td>{val}</td>;
-                  })}
-                </tr>
-              ))
-            : "No data"}
+          {tableData.map((item, index) => {
+            return (
+              <tr
+                key={index}
+                className={`${
+                  !item?.worker && !item?.hourly_rate ? "indicator" : "parent"
+                }`}
+              >
+                {Object.values(item).map((val) => {
+                  return <td>{val}</td>;
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-    </div>
+    </TableWrapper>
   );
 };
 

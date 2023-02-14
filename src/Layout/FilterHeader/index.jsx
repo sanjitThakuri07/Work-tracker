@@ -4,59 +4,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import styles from "../../components/Dropdown/dropdown.module.css";
-
-const Header = styled.header`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-items: center;
-`;
-
-const ImportCSVContainer = styled.form`
-  text-align: end;
-
-  input {
-    display: none;
-  }
-
-  label {
-    background: ${({ fileSelected }) =>
-      !fileSelected ? "#0276e1" : "rgba(2, 117, 225,.3)"};
-    padding: 0.5rem 1rem;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    /* pointer-events: ${({ fileSelected }) =>
-      !fileSelected ? "auto" : "none"}; */
-  }
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  grid-column: 1/-1;
-
-  & > * {
-    width: 80%;
-    margin-right: 15px;
-  }
-`;
-
-const Date = styled.div`
-  .react-datepicker-wrapper {
-    height: 100%;
-  }
-  .react-datepicker__input-container {
-    height: 100%;
-  }
-`;
-
-const FilterOptions = styled.div`
-  display: flex;
-  gap: 0.3125rem;
-  margin: 0.9375rem 0;
-
-  grid-column: 1/-1;
-`;
+import {
+  Header,
+  ImportCSVContainer,
+  FilterContainer,
+  Date,
+  FilterOptions,
+} from "./FilterHeaderStyles";
 
 const Index = ({
   handleCsvOnSubmit,
@@ -65,7 +19,6 @@ const Index = ({
   reportFrequency,
 }) => {
   const [csvSelected, setCsvSelected] = useState(false);
-  console.log({ csvSelected });
 
   function selectOption({ option, value, onChange }) {
     if (value.includes(option)) {
@@ -95,8 +48,12 @@ const Index = ({
         <Date>
           <DatePicker
             selected={date.startDate}
-            onChange={(val) => date.setStartDate(val)}
             className={`${styles.container} default__height`}
+            selectsStart
+            startDate={date.startDate}
+            // endDate={endDate}
+            onChange={(val) => date.setStartDate(val)}
+            placeholderText="Start Date"
           />
         </Date>
         <Date>
@@ -104,6 +61,10 @@ const Index = ({
             selected={date.endDate}
             onChange={(val) => date.setEndDate(val)}
             className={`${styles.container} default__height`}
+            selectsStart
+            startDate={date.startDate}
+            minDate={date.startDate}
+            placeholderText="End Date"
           />
         </Date>
         <Select
