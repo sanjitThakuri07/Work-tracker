@@ -268,6 +268,7 @@ function App() {
       (i) => ({
         ...i,
         project_hours: Number(i.project_hours / 60 / 60).toFixed(2),
+        total_hours: Number(i.total_hours / 60 / 60).toFixed(2),
       })
     );
 
