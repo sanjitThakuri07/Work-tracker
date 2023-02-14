@@ -176,12 +176,14 @@ function App() {
               )
               .reduce((p, c) => p + Number(c.duration_seconds), 0);
 
-            time[`${divison[0]}-${divison[1]}`] = totalSeconds;
+            time[`${divison[0]}-${divison[1]}`] = Number(
+              totalSeconds / 60 / 60
+            ).toFixed(2);
 
             total_project_hours[`${project}`][`${divison[0]}-${divison[1]}`] =
               (total_project_hours[`${project}`][
                 `${divison[0]}-${divison[1]}`
-              ] || 0) + totalSeconds;
+              ] || 0) + (totalSeconds || 0);
 
             return totalSeconds;
           });
@@ -227,28 +229,40 @@ function App() {
       transformedData = [...transformedData, ...transformedProjectData];
     });
 
-    Object.entries(total_project_hours).map((entry, index) => {
-      const { project_cost, project_hours, ...date } = entry[1];
-      transformedProjectData.push({
-        worker: index ? "" : "Total",
-        hourly_rate: "",
-        project: entry[0],
-        ...date,
-        project_hours: Number(project_hours / 60 / 60).toFixed(2),
-        total_hours: Number(
-          Object.values(date).reduce((p, c) => p + c, 0)
-        ).toFixed(2),
-        project_cost: Number(project_cost).toFixed(2),
-        total_cost: !index
-          ? Number(
-              Object.values(total_project_hours).reduce(
-                (p, c) => p + c.project_cost,
-                0
-              )
-            ).toFixed(2)
-          : "",
+    Object.entries(total_project_hours)
+      .filter((entry) => Number(entry[1]?.project_cost))
+      .map((entry, index) => {
+        const { project_cost, project_hours, ...date } = entry[1];
+
+        console.log(
+          Object.values(total_project_hours),
+          "aaa",
+          Object.values(total_project_hours).reduce(
+            (p, c) => p + Number(c.project_cost || 0),
+            0
+          )
+        );
+
+        transformedProjectData.push({
+          worker: index ? "" : "Total ",
+          hourly_rate: "",
+          project: entry[0],
+          ...date,
+          project_hours: Number(project_hours / 60 / 60).toFixed(2),
+          total_hours: Number(
+            Object.values(date).reduce((p, c) => p + c, 0)
+          ).toFixed(2),
+          project_cost: Number(project_cost).toFixed(2),
+          total_cost: !index
+            ? Number(
+                Object.values(total_project_hours).reduce(
+                  (p, c) => p + (c.project_cost || 0),
+                  0
+                )
+              ).toFixed(2)
+            : "",
+        });
       });
-    });
 
     transformedData = [...transformedData, ...transformedProjectData].map(
       (i) => ({

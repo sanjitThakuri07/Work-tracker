@@ -9,6 +9,9 @@ export const TableWrapper = styled.div`
     border-collapse: collapse;
 
     tr {
+      th {
+        white-space: nowrap;
+      }
       th,
       td {
         padding: 12px 8px;

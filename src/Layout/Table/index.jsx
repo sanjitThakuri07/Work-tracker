@@ -6,6 +6,8 @@ import { TableWrapper } from "./TableStyle";
 const Table = ({ tableHeader = [], tableData = [] }) => {
   if (!tableData.length) return <>No Data</>;
 
+  console.log({ tableData });
+
   return (
     <TableWrapper>
       <table className="fl-table">
