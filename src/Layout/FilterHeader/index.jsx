@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Select } from "../../components/Dropdown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import styled from "styled-components";
 import styles from "../../components/Dropdown/dropdown.module.css";
+import { FiFilter } from "react-icons/fi";
+import { CiCalendarDate } from "react-icons/ci";
+import { BiImport } from "react-icons/bi";
+
 import {
   Header,
   ImportCSVContainer,
@@ -33,7 +36,8 @@ const Index = ({
       <h1>Workers Time Tracker</h1>
       <ImportCSVContainer fileSelected={csvSelected}>
         <label htmlFor="csvFileInput">
-          {csvSelected ? "Imported CSV" : "Import CSV"}
+          <BiImport />
+          <span>{csvSelected ? "Imported CSV" : "Import CSV"}</span>
         </label>
         <input
           type={"file"}
@@ -55,6 +59,7 @@ const Index = ({
             onChange={(val) => date.setStartDate(val)}
             placeholderText="Start Date"
           />
+          <CiCalendarDate />
         </Date>
         <Date>
           <DatePicker
@@ -66,19 +71,25 @@ const Index = ({
             minDate={date.startDate}
             placeholderText="End Date"
           />
+          <CiCalendarDate />
         </Date>
+        <Select
+          options={reportFrequency.options}
+          value={reportFrequency.value}
+          onChange={(o) => reportFrequency.setValue2(o)}
+          placeholder={"Frequency"}
+        />
         <Select
           multiple
           options={projects.options || []}
           value={projects?.projectValue}
           onChange={(o) => projects.setProjects(o)}
           placeholder={"Projects"}
-        />
-        <Select
-          options={reportFrequency.options}
-          value={reportFrequency.value}
-          onChange={(o) => reportFrequency.setValue2(o)}
-          placeholder={"Frequency"}
+          icon={
+            <div className="custom__icon">
+              <FiFilter />
+            </div>
+          }
         />
       </FilterContainer>
       <FilterOptions>

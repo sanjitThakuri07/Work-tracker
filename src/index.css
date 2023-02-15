@@ -27,6 +27,14 @@ body {
   padding: 1.5rem;
 }
 
+/* custom and default styles */
+
 .default__height {
   height: 100%;
+}
+
+.custom__icon {
+  display: flex;
+  align-items: center;
+  margin-top: 0.2rem;
 }

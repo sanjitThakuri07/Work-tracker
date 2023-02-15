@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./dropdown.module.css";
 
-export function Select({ multiple, value, onChange, options, placeholder }) {
+export function Select({
+  multiple,
+  value,
+  onChange,
+  options,
+  placeholder,
+  icon,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const containerRef = useRef(null);
@@ -72,6 +79,7 @@ export function Select({ multiple, value, onChange, options, placeholder }) {
       tabIndex={0}
       className={styles.container}
     >
+      {!!icon && icon}
       <span className={styles.value}>
         {multiple
           ? value.length

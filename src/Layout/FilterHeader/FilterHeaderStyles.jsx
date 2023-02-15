@@ -14,16 +14,18 @@ export const Header = styled.header`
 `;
 
 export const ImportCSVContainer = styled.form`
-  text-align: end;
+  @media (min-width: 430px) {
+    justify-self: end;
+  }
 
   @media (max-width: 430px) {
     grid-row: 2;
     grid-column: 1/-1;
     label {
-      display: block;
       width: 100%;
       text-align: center;
       margin-bottom: 16px;
+      justify-content: center;
     }
   }
 
@@ -37,7 +39,11 @@ export const ImportCSVContainer = styled.form`
     padding: 0.5rem 1rem;
     color: #fff;
     border-radius: 4px;
+    align-self: end;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     /* pointer-events: ${({ fileSelected }) =>
       !fileSelected ? "auto" : "none"}; */
   }
@@ -70,6 +76,16 @@ export const Date = styled.div`
   }
   .react-datepicker__input-container {
     height: 100%;
+  }
+
+  position: relative;
+
+  & > svg {
+    position: absolute;
+    font-size: 1.2rem;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `;
 
